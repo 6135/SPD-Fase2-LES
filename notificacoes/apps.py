@@ -9,4 +9,3 @@ class NotificacoesConfig(AppConfig):
         import notifications.signals
 
         notifications.notify = notifications.signals.notify
-        

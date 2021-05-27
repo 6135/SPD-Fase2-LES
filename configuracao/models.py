@@ -376,7 +376,7 @@ class Unidadeorganica(models.Model):
     def coord_(self):
         if Coordenador.objects.filter(faculdade_id=self.id).exists():
             return Coordenador.objects.filter(faculdade_id=self.id).first()
-        else return None
+        else: return None
 
 class Curso(models.Model):
 

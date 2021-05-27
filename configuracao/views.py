@@ -162,9 +162,7 @@ def newDay(request, id=None):
     if id is None:
         dia_aberto = Diaaberto(administradorutilizadorid=logged_admin)
     else:
-        dia_aberto = Diaaberto.objects.get(
-            id=id, administradorutilizadorid=logged_admin
-        )
+        dia_aberto = Diaaberto.objects.get(id=id)
 
     dia_aberto_form = diaAbertoSettingsForm(instance=dia_aberto)
 

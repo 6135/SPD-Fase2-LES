@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Utilizador,Administrador,Participante,ProfessorUniversitario,Coordenador,Colaborador
+from .models import (
+    Utilizador,
+    Administrador,
+    Participante,
+    ProfessorUniversitario,
+    Coordenador,
+    Colaborador,
+)
+
 # Register your models here.
 admin.site.register(Utilizador)
 

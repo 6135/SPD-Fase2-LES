@@ -14,7 +14,7 @@ from dia_aberto.utils import get_driver
 
 
 class EnviarMensagemUnidadeOrganicaGrupo(StaticLiveServerTestCase):
-    """ Testes funcionais enviar mensagem a um grupo de utilizadores - Colaborador """
+    """Testes funcionais enviar mensagem a um grupo de utilizadores - Colaborador"""
 
     @classmethod
     def setUpClass(cls):
@@ -24,11 +24,11 @@ class EnviarMensagemUnidadeOrganicaGrupo(StaticLiveServerTestCase):
         cls.driver.implicitly_wait(10)
 
     def setUp(self):
-        call_command('create_groups')
-        self.my_group = Group.objects.get(name='Colaborador')
+        call_command("create_groups")
+        self.my_group = Group.objects.get(name="Colaborador")
         self.colaborador = create_Colaborador_0()
         self.colaborador.valido = "True"
-        self.colaborador.set_password('andre123456')
+        self.colaborador.set_password("andre123456")
         self.colaborador.save()
         self.my_group.user_set.add(self.colaborador)
 
@@ -38,19 +38,19 @@ class EnviarMensagemUnidadeOrganicaGrupo(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_enviar_mensagem_grupo_unidade_organica(self):
-        """ Testes funcionais enviar mensagem a um grupo de utilizadores - Colaborador """
-        self.driver.get('%s%s' % (self.live_server_url, reverse('home')))
+        """Testes funcionais enviar mensagem a um grupo de utilizadores - Colaborador"""
+        self.driver.get("%s%s" % (self.live_server_url, reverse("home")))
         self.driver.find_element(By.CSS_SELECTOR, ".icon").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys(
-            self.colaborador.username)
+            self.colaborador.username
+        )
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("andre123456")
         self.driver.find_element(By.CSS_SELECTOR, ".is-success > span").click()
         self.driver.find_element(By.CSS_SELECTOR, ".mdi-message").click()
         self.driver.find_element(By.LINK_TEXT, "Nova mensagem").click()
-        self.driver.find_element(
-            By.CSS_SELECTOR, "a:nth-child(2) > .button").click()
+        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2) > .button").click()
         self.driver.find_element(By.ID, "id_titulo").click()
         self.driver.find_element(By.ID, "id_titulo").send_keys("Oi")
         self.driver.find_element(By.NAME, "mensagem").click()

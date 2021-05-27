@@ -1,5 +1,5 @@
-#setup:
-		#python3 -m venv ~/.dia-aberto-new/
+setup:
+		python3 -m venv ~/.dia-aberto-new/
 		#source ~/.dia-aberto-new/bin/activate
 install:
 		pip3 install --upgrade pip
@@ -11,10 +11,11 @@ prep:
 		python3 manage.py migrate
 		python3 manage.py create_groups
 		python3 manage.py create_admin test_user
+		mysql spdfase2 -u root < inserir_dados_bd.sql
 		
 test:
-		python3 manage.py test
-
+		python manage.py test
 
 init: install format
 deploy: prep test
+all: init deploy

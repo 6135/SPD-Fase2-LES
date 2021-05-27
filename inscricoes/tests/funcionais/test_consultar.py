@@ -12,7 +12,18 @@ from inscricoes.models import Inscricao, Escola, Responsavel
 import datetime
 from utilizadores.tests.test_models import create_Participante_0
 from atividades.models import Atividade, Tema
-from inscricoes.tests.samples import create_Diaaberto_0, create_Espaco_0, create_Sessao_0, create_Sessao_1, create_Sessao_2, create_Transporte_0, create_Transportehorario_0, create_Horario_0, create_Horario_1, create_Horario_2
+from inscricoes.tests.samples import (
+    create_Diaaberto_0,
+    create_Espaco_0,
+    create_Sessao_0,
+    create_Sessao_1,
+    create_Sessao_2,
+    create_Transporte_0,
+    create_Transportehorario_0,
+    create_Horario_0,
+    create_Horario_1,
+    create_Horario_2,
+)
 from notificacoes.tests.test_models import create_MensagemRecebida_0
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumlogin import force_login
@@ -27,7 +38,7 @@ def create_Inscricao_1():
         participante=create_Participante_Rafael(),
         dia=datetime.date(2020, 8, 24),
         diaaberto=create_Diaaberto_0(),
-        meio_transporte='autocarro',
+        meio_transporte="autocarro",
         hora_chegada=datetime.time(8, 40, 0),
         local_chegada="Terminal Rodoviário de Faro",
         entrecampi=True,
@@ -52,7 +63,7 @@ def create_ProfessorUniversitario_0():
         valido="True",
         gabinete="1.69",
         faculdade=create_UO_0(create_Campus_0()),
-        departamento=create_Departamento_0(create_UO_0(create_Campus_0()))
+        departamento=create_Departamento_0(create_UO_0(create_Campus_0())),
     )[0]
 
 
@@ -64,7 +75,7 @@ def create_Participante_Rafael():
         password="andre123456",
         email="rafael@rafael.com",
         contacto="+351910777888",
-        valido="True"
+        valido="True",
     )[0]
 
 
@@ -79,21 +90,19 @@ def create_Responsavel_0():
 
 def create_Departamento_0(uo):
     return Departamento.objects.get_or_create(
-        nome='Departamento de Engenharia Informatica e Eletronica',
-        sigla='DEEI',
-        unidadeorganicaid=uo
+        nome="Departamento de Engenharia Informatica e Eletronica",
+        sigla="DEEI",
+        unidadeorganicaid=uo,
     )[0]
 
 
 def create_Campus_0():
-    return Campus.objects.get_or_create(nome='Gambelas')[0]
+    return Campus.objects.get_or_create(nome="Gambelas")[0]
 
 
 def create_UO_0(campus):
     return Unidadeorganica.objects.get_or_create(
-        nome='Faculdade de Ciencias e Tecnologias',
-        sigla='FCT',
-        campusid=campus
+        nome="Faculdade de Ciencias e Tecnologias", sigla="FCT", campusid=campus
     )[0]
 
 
@@ -107,8 +116,8 @@ def create_Atividade_0():
         descricao="Aprendendo Java",
         publicoalvo="Ciencias e Tecnologia",
         nrcolaboradoresnecessario=0,
-        tipo='Palestra',
-        estado='Aceite',
+        tipo="Palestra",
+        estado="Aceite",
         professoruniversitarioutilizadorid=create_ProfessorUniversitario_0(),
         duracaoesperada=30,
         participantesmaximo=30,
@@ -119,7 +128,7 @@ def create_Atividade_0():
 
 
 class ConsultarInscricaoTest(StaticLiveServerTestCase):
-    """ Testes funcionais do consultar inscrição """
+    """Testes funcionais do consultar inscrição"""
 
     @classmethod
     def setUpClass(cls):
@@ -136,10 +145,9 @@ class ConsultarInscricaoTest(StaticLiveServerTestCase):
         self.atividade.save()
         self.responsavel = create_Responsavel_0()
         self.responsavel.save()
-        group = Group.objects.get(name='Participante')
+        group = Group.objects.get(name="Participante")
         group.user_set.add(self.inscricao.participante)
-        force_login(self.inscricao.participante,
-                    self.driver, self.live_server_url)
+        force_login(self.inscricao.participante, self.driver, self.live_server_url)
 
     @classmethod
     def tearDownClass(cls):
@@ -147,22 +155,29 @@ class ConsultarInscricaoTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_consultar_inscricoes(self):
-        self.driver.get('%s%s' % (self.live_server_url, reverse('home')))
+        self.driver.get("%s%s" % (self.live_server_url, reverse("home")))
         self.driver.set_window_size(1918, 1027)
         self.driver.find_element(By.LINK_TEXT, "Minhas Inscrições").click()
         self.driver.find_element(By.NAME, "areacientifica").click()
+        self.driver.find_element(By.NAME, "areacientifica").send_keys("Ciencias")
         self.driver.find_element(
-            By.NAME, "areacientifica").send_keys("Ciencias")
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".is-primary > span:nth-child(2)").click()
+            By.CSS_SELECTOR, ".is-primary > span:nth-child(2)"
+        ).click()
         self.driver.find_element(By.CSS_SELECTOR, ".is-light").click()
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".is-expanded > .is-primary").click()
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".even > td:nth-child(2)").click()
-        assert self.driver.find_element(
-            By.CSS_SELECTOR, ".even > td:nth-child(2)").text == "1"
-        assert self.driver.find_element(
-            By.CSS_SELECTOR, "td:nth-child(5)").text == "Escola Básica e Secundária do Cadaval - Cadaval"
-        assert self.driver.find_element(
-            By.CSS_SELECTOR, "tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)").text == "Rafael Duarte"
+        self.driver.find_element(By.CSS_SELECTOR, ".is-expanded > .is-primary").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".even > td:nth-child(2)").click()
+        assert (
+            self.driver.find_element(By.CSS_SELECTOR, ".even > td:nth-child(2)").text
+            == "1"
+        )
+        assert (
+            self.driver.find_element(By.CSS_SELECTOR, "td:nth-child(5)").text
+            == "Escola Básica e Secundária do Cadaval - Cadaval"
+        )
+        assert (
+            self.driver.find_element(
+                By.CSS_SELECTOR,
+                "tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)",
+            ).text
+            == "Rafael Duarte"
+        )

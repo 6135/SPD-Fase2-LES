@@ -14,7 +14,7 @@ from dia_aberto.utils import get_driver
 
 
 class TestConsultarTarefas(StaticLiveServerTestCase):
-    """ Testes funcionais consultar tarefas de um colaborador - Sucesso """
+    """Testes funcionais consultar tarefas de um colaborador - Sucesso"""
 
     @classmethod
     def setUpClass(cls):
@@ -24,10 +24,10 @@ class TestConsultarTarefas(StaticLiveServerTestCase):
         cls.driver.implicitly_wait(10)
 
     def setUp(self):
-        call_command('create_groups')
-        self.my_group = Group.objects.get(name='Colaborador')
+        call_command("create_groups")
+        self.my_group = Group.objects.get(name="Colaborador")
         self.colaborador = create_Colaborador_0()
-        self.colaborador.set_password('andre123456')
+        self.colaborador.set_password("andre123456")
         self.colaborador.valido = "True"
         self.colaborador.save()
         self.my_group.user_set.add(self.colaborador)
@@ -38,18 +38,19 @@ class TestConsultarTarefas(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_login_ok(self):
-        """ Teste funcional consultar tarefas de um colaborador - sucesso """
-        self.driver.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
+        """Teste funcional consultar tarefas de um colaborador - sucesso"""
+        self.driver.get("%s%s" % (self.live_server_url, reverse("home")))
+        self.driver.find_element(By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys(
-            self.colaborador.username)
+            self.colaborador.username
+        )
         self.driver.find_element(By.ID, "id_password").send_keys("andre123456")
         self.driver.find_element(By.ID, "id_password").send_keys(Keys.ENTER)
-        assert self.driver.find_element(
-            By.CSS_SELECTOR, ".message-body strong").text == f"Bem vindo(a) {self.colaborador.first_name}"
-        self.driver.find_element(
-            By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
+        assert (
+            self.driver.find_element(By.CSS_SELECTOR, ".message-body strong").text
+            == f"Bem vindo(a) {self.colaborador.first_name}"
+        )
+        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
         self.driver.find_element(By.LINK_TEXT, "Minhas Tarefas").click()
         self.driver.find_element(By.CSS_SELECTOR, ".menu-label").click()

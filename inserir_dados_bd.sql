@@ -139,6 +139,8 @@
 --     ('6', 'Imagem Animada'),
 -- )
 
+INSERT INTO DiaAberto (PrecoAlunos,PrecoProfessores,EnderecoPaginaWeb,Descricao,EmailDiaAberto,Ano,DataDiaAbertoInicio,DataDiaAbertoFim,DataInscricaoAtividadesInicio,DataInscricaoAtividadesFim,DataPropostasAtividadesIncio,DataPorpostaAtividadesFim,AdministradorUtilizadorID,EscalaSessoes) VALUES ('1','1','test.com','Dia Aberto SPDFASE2','stuff@gmail.com','2021','2021/01/01 23:59','2021/12/30 23:59','2021/01/01 23:59','2021/12/30 23:59','2021/01/01 23:59','2021/12/30 23:59','1','0:30');
+
 INSERT INTO Horario (inicio,fim) VALUES ('12:00','14:00');
 
 INSERT INTO Campus VALUES ('1','Penha');

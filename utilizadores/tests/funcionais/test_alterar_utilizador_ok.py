@@ -1,4 +1,3 @@
-
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -15,7 +14,7 @@ from dia_aberto.utils import get_driver
 
 
 class CriarParticipante(StaticLiveServerTestCase):
-    """ Testes funcionais alterar utilizador - Sucesso """
+    """Testes funcionais alterar utilizador - Sucesso"""
 
     @classmethod
     def setUpClass(cls):
@@ -25,13 +24,13 @@ class CriarParticipante(StaticLiveServerTestCase):
         cls.driver.implicitly_wait(10)
 
     def setUp(self):
-        call_command('create_groups')
-        self.my_group = Group.objects.get(name='Administrador')
+        call_command("create_groups")
+        self.my_group = Group.objects.get(name="Administrador")
         self.administrador = create_Administrador_0()
         self.administrador.valido = "True"
         self.administrador.email = ""
         self.administrador.contacto = ""
-        self.administrador.set_password('andre123456')
+        self.administrador.set_password("andre123456")
         self.administrador.save()
         self.my_group.user_set.add(self.administrador)
 
@@ -41,22 +40,23 @@ class CriarParticipante(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_criar_participante_ok(self):
-        """ Testes funcionais alterar utilizador - Sucesso """
-        self.driver.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
+        """Testes funcionais alterar utilizador - Sucesso"""
+        self.driver.get("%s%s" % (self.live_server_url, reverse("home")))
+        self.driver.find_element(By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys(
-            self.administrador.username)
+            self.administrador.username
+        )
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("andre123456")
         self.driver.find_element(By.CSS_SELECTOR, ".is-outlined").click()
+        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
         self.driver.find_element(
-            By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
+            By.CSS_SELECTOR, "#dropdown_definicoes .button"
+        ).click()
         self.driver.find_element(
-            By.CSS_SELECTOR, "#dropdown_definicoes .button").click()
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".is-disabled:nth-child(1) > strong").click()
+            By.CSS_SELECTOR, ".is-disabled:nth-child(1) > strong"
+        ).click()
         self.driver.find_element(By.ID, "id_email").click()
         self.driver.find_element(By.ID, "id_email").send_keys("admin@admin.pt")
         self.driver.find_element(By.ID, "id_contacto").click()
@@ -64,5 +64,7 @@ class CriarParticipante(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_gabinete").click()
         self.driver.find_element(By.ID, "id_gabinete").send_keys("A27")
         self.driver.find_element(By.CSS_SELECTOR, ".is-success > span").click()
-        assert self.driver.find_element(
-            By.CSS_SELECTOR, ".message-body strong").text == "Perfil alterado com sucesso"
+        assert (
+            self.driver.find_element(By.CSS_SELECTOR, ".message-body strong").text
+            == "Perfil alterado com sucesso"
+        )

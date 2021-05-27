@@ -1,7 +1,24 @@
 from django.test import TestCase
-from inscricoes.models import Escola, Inscricao, Inscricaoprato, Inscricaosessao, Inscricaotransporte, Responsavel
-from utilizadores.tests.test_models import create_Campus_0, create_Participante_0, create_ProfessorUniversitario_0
-from inscricoes.tests.samples import create_Diaaberto_0, create_Sessao_0, create_Sessao_1, create_Transporte_0, create_Transportehorario_0
+from inscricoes.models import (
+    Escola,
+    Inscricao,
+    Inscricaoprato,
+    Inscricaosessao,
+    Inscricaotransporte,
+    Responsavel,
+)
+from utilizadores.tests.test_models import (
+    create_Campus_0,
+    create_Participante_0,
+    create_ProfessorUniversitario_0,
+)
+from inscricoes.tests.samples import (
+    create_Diaaberto_0,
+    create_Sessao_0,
+    create_Sessao_1,
+    create_Transporte_0,
+    create_Transportehorario_0,
+)
 import datetime
 
 
@@ -37,7 +54,7 @@ def create_Inscricao_0():
         participante=create_Participante_0(),
         dia=datetime.date(2020, 8, 21),
         diaaberto=create_Diaaberto_0(),
-        meio_transporte='comboio',
+        meio_transporte="comboio",
         hora_chegada=datetime.time(10, 30, 00),
         local_chegada="Estação de Comboios de Faro",
         entrecampi=True,
@@ -52,7 +69,7 @@ def create_Inscricao_1():
         participante=create_Participante_0(),
         dia=datetime.date(2020, 8, 24),
         diaaberto=create_Diaaberto_0(),
-        meio_transporte='autocarro',
+        meio_transporte="autocarro",
         hora_chegada=datetime.time(8, 40, 0),
         local_chegada="Terminal Rodoviário de Faro",
         entrecampi=True,
@@ -151,24 +168,23 @@ def create_Inscricaotransporte_1():
 
 
 class TestInscricoesModels(TestCase):
-    """ Teste suite dos modelos da app "inscricoes" """
+    """Teste suite dos modelos da app "inscricoes" """
 
     def test_Escola_model(self):
-        """ Testes do modelo "Escola" """
+        """Testes do modelo "Escola" """
         escolas = [
             create_Escola_0(),
             create_Escola_1(),
             create_Escola_2(),
         ]
+        self.assertEquals(str(escolas[0]), "Escola Secundária de Loulé - Loulé")
         self.assertEquals(
-            str(escolas[0]), "Escola Secundária de Loulé - Loulé")
-        self.assertEquals(
-            str(escolas[1]), "Escola Básica e Secundária do Cadaval - Cadaval")
-        self.assertEquals(
-            str(escolas[2]), "Universidade do Algarve - Faro")
+            str(escolas[1]), "Escola Básica e Secundária do Cadaval - Cadaval"
+        )
+        self.assertEquals(str(escolas[2]), "Universidade do Algarve - Faro")
 
     def test_Inscricao_model(self):
-        """ Testes do modelo "Inscricao" """
+        """Testes do modelo "Inscricao" """
         inscricoes = [
             create_Inscricao_0(),
             create_Inscricao_1(),
@@ -176,21 +192,21 @@ class TestInscricoesModels(TestCase):
         ]
 
     def test_Responsavel_model(self):
-        """ Testes do modelo "Responsavel" """
+        """Testes do modelo "Responsavel" """
         responsaveis = [
             create_Responsavel_0(),
             create_Responsavel_1(),
         ]
 
     def test_Inscricaoprato_model(self):
-        """ Testes do modelo "Inscricaoprato" """
+        """Testes do modelo "Inscricaoprato" """
         inscricoesprato = [
             create_Inscricaoprato_0(),
             create_Inscricaoprato_1(),
         ]
 
     def test_Inscricaosessao_model(self):
-        """ Testes do modelo "Inscricaosessao" """
+        """Testes do modelo "Inscricaosessao" """
         inscricoessessao = [
             create_Inscricaosessao_0(),
             create_Inscricaosessao_1(),
@@ -198,7 +214,7 @@ class TestInscricoesModels(TestCase):
         ]
 
     def test_Inscricaotransporte_model(self):
-        """ Testes do modelo "Inscricaotransporte" """
+        """Testes do modelo "Inscricaotransporte" """
         inscricoesprato = [
             create_Inscricaotransporte_0(),
             create_Inscricaotransporte_1(),

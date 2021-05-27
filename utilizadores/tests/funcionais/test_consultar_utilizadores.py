@@ -14,7 +14,7 @@ from dia_aberto.utils import get_driver
 
 
 class EnviarMensagemAdminGrupo(StaticLiveServerTestCase):
-    """ Testes funcionais consultar utilizadores - Administrador e Coordenador """
+    """Testes funcionais consultar utilizadores - Administrador e Coordenador"""
 
     @classmethod
     def setUpClass(cls):
@@ -24,11 +24,11 @@ class EnviarMensagemAdminGrupo(StaticLiveServerTestCase):
         cls.driver.implicitly_wait(10)
 
     def setUp(self):
-        call_command('create_groups')
-        self.my_group = Group.objects.get(name='Administrador')
+        call_command("create_groups")
+        self.my_group = Group.objects.get(name="Administrador")
         self.administrador = create_Administrador_0()
         self.administrador.valido = "True"
-        self.administrador.set_password('andre123456')
+        self.administrador.set_password("andre123456")
         self.administrador.save()
         self.my_group.user_set.add(self.administrador)
 
@@ -38,18 +38,17 @@ class EnviarMensagemAdminGrupo(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_enviar_mensagem_grupo_admin(self):
-        """ Testes funcionais consultar utilizadores - Administrador e Coordenador """
-        self.driver.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.driver.find_element(
-            By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
+        """Testes funcionais consultar utilizadores - Administrador e Coordenador"""
+        self.driver.get("%s%s" % (self.live_server_url, reverse("home")))
+        self.driver.find_element(By.CSS_SELECTOR, ".button > span:nth-child(2)").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys(
-            self.administrador.username)
+            self.administrador.username
+        )
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("andre123456")
         self.driver.find_element(By.CSS_SELECTOR, ".is-outlined").click()
-        self.driver.find_element(
-            By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
+        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(1) > .button").click()
         self.driver.find_element(By.LINK_TEXT, "Utilizadores").click()
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".menu-label")
         assert len(elements) > 0

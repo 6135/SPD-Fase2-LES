@@ -5,130 +5,122 @@ from configuracao.models import *
 from atividades.models import Tema
 from django.forms.widgets import TextInput
 
+
 class TemaFilter(django_filters.FilterSet):
-    tema = django_filters.CharFilter(
-        field_name="tema", lookup_expr='icontains')
+    tema = django_filters.CharFilter(field_name="tema", lookup_expr="icontains")
 
     class Meta:
         model = Tema
-        fields = '__all__'
+        fields = "__all__"
+
 
 def get_faculdades(queryset, name, value):
     return queryset.filter(
-        Exists(Curso.objects.filter(
-            id=OuterRef('pk'),
-            unidadeorganicaid=value
-        ))
+        Exists(Curso.objects.filter(id=OuterRef("pk"), unidadeorganicaid=value))
     )
 
+
 class CursoFilter(django_filters.FilterSet):
-    nome = django_filters.CharFilter(
-        field_name="nome", lookup_expr='icontains')
-    sigla = django_filters.CharFilter(
-        field_name="sigla", lookup_expr='icontains')
+    nome = django_filters.CharFilter(field_name="nome", lookup_expr="icontains")
+    sigla = django_filters.CharFilter(field_name="sigla", lookup_expr="icontains")
     unidadeorganicaid = django_filters.CharFilter(method=get_faculdades)
 
     class Meta:
         model = Curso
-        fields = '__all__'
+        fields = "__all__"
+
 
 def get_faculdades_dep(queryset, name, value):
     return queryset.filter(
-        Exists(Departamento.objects.filter(
-            id=OuterRef('pk'),
-            unidadeorganicaid=value
-        ))
+        Exists(Departamento.objects.filter(id=OuterRef("pk"), unidadeorganicaid=value))
     )
 
+
 class DepartamentoFilter(django_filters.FilterSet):
-    nome = django_filters.CharFilter(
-        field_name="nome", lookup_expr='icontains')
-    sigla = django_filters.CharFilter(
-        field_name="sigla", lookup_expr='icontains')
+    nome = django_filters.CharFilter(field_name="nome", lookup_expr="icontains")
+    sigla = django_filters.CharFilter(field_name="sigla", lookup_expr="icontains")
     unidadeorganicaid = django_filters.CharFilter(method=get_faculdades_dep)
 
     class Meta:
         model = Departamento
-        fields = '__all__'
+        fields = "__all__"
+
 
 def get_campi(queryset, name, value):
     return queryset.filter(
-        Exists(Edificio.objects.filter(
-            id=OuterRef('pk'),
-            campus_id=value
-        ))
+        Exists(Edificio.objects.filter(id=OuterRef("pk"), campus_id=value))
     )
 
+
 class EdificioFilter(django_filters.FilterSet):
-    nome = django_filters.CharFilter(
-        field_name="nome", lookup_expr='icontains')
+    nome = django_filters.CharFilter(field_name="nome", lookup_expr="icontains")
     campus = django_filters.CharFilter(method=get_campi)
 
     class Meta:
         model = Edificio
-        fields = ['nome', 'campus']
+        fields = ["nome", "campus"]
 
 
 class UOFilter(django_filters.FilterSet):
-    nome = django_filters.CharFilter(
-        field_name="nome", lookup_expr='icontains')
-    sigla = django_filters.CharFilter(
-        field_name="sigla", lookup_expr='icontains')   
+    nome = django_filters.CharFilter(field_name="nome", lookup_expr="icontains")
+    sigla = django_filters.CharFilter(field_name="sigla", lookup_expr="icontains")
     campusis = django_filters.CharFilter(method=get_campi)
 
     class Meta:
         model = Unidadeorganica
-        fields = ['nome','sigla', 'campusid']
+        fields = ["nome", "sigla", "campusid"]
 
-def get_campi_menu(queryset,name,value):
-    return queryset.filter(
-        Exists(Menu.objects.filter(
-            id=OuterRef('pk'),
-            campus=value
-        ))
-    )    
+
+def get_campi_menu(queryset, name, value):
+    return queryset.filter(Exists(Menu.objects.filter(id=OuterRef("pk"), campus=value)))
+
+
 class MenuFilter(django_filters.FilterSet):
     dia = django_filters.DateFilter(field_name="dia")
     campus = django_filters.CharFilter(method=get_campi)
 
     class Meta:
         model = Menu
-        fields = ['campus', 'dia']
+        fields = ["campus", "dia"]
+
 
 class TransporteFilter(django_filters.FilterSet):
     identificador = django_filters.CharFilter(
-        field_name="transporte__identificador", lookup_expr='icontains')
-    de = django_filters.CharFilter(
-        field_name="origem", lookup_expr='icontains')
-    para = django_filters.CharFilter(
-        field_name="chegada", lookup_expr='icontains')     
+        field_name="transporte__identificador", lookup_expr="icontains"
+    )
+    de = django_filters.CharFilter(field_name="origem", lookup_expr="icontains")
+    para = django_filters.CharFilter(field_name="chegada", lookup_expr="icontains")
 
     class Meta:
         model = Transportehorario
-        fields = '__all__'
+        fields = "__all__"
+
 
 def get_dia(queryset, name, value):
-        return queryset.filter(
-            Exists(Diaaberto.objects.filter(
-                id=OuterRef('pk'),
-                datadiaabertoinicio__date=value
-            ))
-        )   
+    return queryset.filter(
+        Exists(
+            Diaaberto.objects.filter(id=OuterRef("pk"), datadiaabertoinicio__date=value)
+        )
+    )
+
+
 def get_dia_end(queryset, name, value):
-        return queryset.filter(
-            Exists(Diaaberto.objects.filter(
-                id=OuterRef('pk'),
-                datadiaabertofim__date=value
-            ))
-        )   
+    return queryset.filter(
+        Exists(
+            Diaaberto.objects.filter(id=OuterRef("pk"), datadiaabertofim__date=value)
+        )
+    )
+
 
 class DiaAbertoFilter(django_filters.FilterSet):
-    ano = django_filters.CharFilter(field_name="ano",lookup_expr='icontains')
-    diainicio = django_filters.DateFilter(method=get_dia,label="Inicio")
-    diafim = django_filters.DateFilter(method=get_dia_end,label="Fim")
+    ano = django_filters.CharFilter(field_name="ano", lookup_expr="icontains")
+    diainicio = django_filters.DateFilter(method=get_dia, label="Inicio")
+    diafim = django_filters.DateFilter(method=get_dia_end, label="Fim")
+
     class Meta:
         model = Diaaberto
-        fields = '__all__'
+        fields = "__all__"
+
 
 # precoalunos = models.FloatField(db_column='PrecoAlunos')
 #    precoprofessores = models.FloatField(
@@ -143,7 +135,7 @@ class DiaAbertoFilter(django_filters.FilterSet):
 #    datadiaabertoinicio = models.DateTimeField(db_column='DataDiaAbertoInicio')
 #    datadiaabertofim = models.DateTimeField(db_column='DataDiaAbertoFim')
 #    datainscricaoatividadesinicio = models.DateTimeField(
-#        db_column='DataInscricaoAtividadesInicio')  
+#        db_column='DataInscricaoAtividadesInicio')
 #    datainscricaoatividadesfim = models.DateTimeField(
 #        db_column='DataInscricaoAtividadesFim')
 #    datapropostasatividadesincio = models.DateTimeField(

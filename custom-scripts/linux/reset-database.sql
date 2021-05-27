@@ -1,2 +1,2 @@
-drop database diaAberto;
-create database diaAberto;
+drop database spdfase2;
+create database spdfase2;
